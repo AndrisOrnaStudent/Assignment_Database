@@ -93,8 +93,7 @@ public class Assessment_Template_2020
     }
 
 
-    public static void displayParticularStudent()
-    {
+    public static void displayParticularStudent() {
         //Your code should go here:
         //1: You need to get the user to select an existing student first - display all the existing students and
         //   let the user select a studentId that they wish to display.
@@ -103,30 +102,36 @@ public class Assessment_Template_2020
         displayAllStudents();
         System.out.print(" Please enter student ID:");
         int student_id = in.nextInt();
-        String str = "select count(*) from student where student_id = " + student_id;
+        String str = "select count(*) from students where student_id = " + student_id;
 
-        try
-        {
+        try {
             rs = stmt.executeQuery(str);
             rs.next();
-
-            System.out.printf("\n%-12s %-15s %-20s %-10s\n", "Student ID", "First Name", "Last Name", "Date of Birth");
-            while (rs.next())
-            {
-                int studentId = rs.getInt("student_id");
+            if (rs.getInt(1) == 0) {
+                System.out.print("This ID is not in our Database");
+            } else {
+                str = "select firstname, lastname from students where student_id =" + student_id;
+                rs = stmt.executeQuery(str);
+                rs.next();
+                //String studentId = rs.getString("student_id");
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
-                String dob = rs.getString("dateOfBirth");
 
-                System.out.printf("%-12d %-15s %-20s %-10s\n", studentId, firstName, lastName, dob);
+                // Lets get modules what students are studying
+                str = "select title from students, attends, modules where students.student_id = attends.student_id and attends.module_id = modules.module_id and students.student_id =" + student_id;
+                rs = stmt.executeQuery(str);
+
+                //Print the result
+                System.out.println("*****************************************");
+                System.out.println("Student ID: " + student_id + "\n"+ "First Name: " + firstName + "\n"+"Last Name: "+ lastName + " \n"+"studies: ");
+                while (rs.next()) {
+                    System.out.println(rs.getString("title"));
+                }
+                System.out.println("*****************************************");
             }
-
-        }
-        catch (SQLException sqle)
-        {
-            System.out.println("Error: failed to display all students.");
-            System.out.println(sqle.getMessage());
-            System.out.println(str);
+        }catch (SQLException e) {
+            System.out.println("Error: failed to display this student.");
+            e.printStackTrace();
         }
         //2: Ensure that the studentId they selected exists (query the database for a count of students with that studentId,
         //    and if the count comes back as 0, then it doesn't exist; if its a 1 then it does.
