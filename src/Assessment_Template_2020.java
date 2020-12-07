@@ -185,6 +185,99 @@ public class Assessment_Template_2020
         //1: Get the required data from the user (i.e. the student data) and validate the data if needs be
         //2: Ensure the student exists as you've done previously
         //3: Edit the selected student
+        displayAllStudents();
+        System.out.print(" Please enter student ID for edititng:");
+        int student_id = in.nextInt();
+        //String str = "select count(*) from students where student_id = " + student_id;
+
+        try {
+            String str = "select count(*) from students where student_id = " + student_id;
+            rs = stmt.executeQuery(str);
+            rs.next();
+
+            if (rs.getInt(1) == 0)
+                {
+                System.out.print("This ID is not in our Database");
+                return;
+                }
+
+                    System.out.print("You have to enter Student First name to find it: ");
+                    String firstName = in.nextLine();
+
+                    System.out.print("You have to enter Student Lastname to find it: ");
+                    String lastName = in.nextLine();
+
+                    System.out.print("You have to enter Student date of birth: year-month-date");
+                    String dob = in.nextLine();
+
+                    //Starts editing student
+                    String str_1 = "UPDATE students SET firstName=?, lastName=?, dob=? where student_id=?";
+                    PreparedStatement pstmt;
+                    pstmt = con.prepareStatement(str_1);
+
+                    pstmt.setString(1, "firstName");
+                    pstmt.setString(2, "lastName");
+                    pstmt.setString(3, "dob");
+
+                    //pstmt.setString(4, "student_id");
+
+                    //displayAllStudents();
+                    /*//Print the result
+                    System.out.println("*****************************************");
+                    System.out.println("Student ID: " + student_id + "\n"+ "First Name: " + firstName + "\n"+"Last Name: "+ lastName + " \n"+"studies: ");
+                    while (rs.next()) {
+                        System.out.println(rs.getString("title"));
+                    }
+                    System.out.println("*****************************************");*/
+        }
+        catch (SQLException e) {
+            System.out.println("Error: failed to display this student.");
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  /*  str = "select firstname, lastname from students where student_id =" + student_id;
+                rs = stmt.executeQuery(str);
+                rs.next();
+                //String studentId = rs.getString("student_id");
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+
+                // Lets get modules what students are studying
+                str = "select title from students, attends, modules where students.student_id = attends.student_id and attends.module_id = modules.module_id and students.student_id =" + student_id;
+                rs = stmt.executeQuery(str);
+
+                //Print the result
+                System.out.println("*****************************************");
+                System.out.println("Student ID: " + student_id + "\n"+ "First Name: " + firstName + "\n"+"Last Name: "+ lastName + " \n"+"studies: ");
+                while (rs.next()) {
+                    System.out.println(rs.getString("title"));
+                }
+                System.out.println("*****************************************");
+            }
+        }catch (SQLException e) {
+            System.out.println("Error: failed to display this student.");
+            e.printStackTrace();
+        }*/
+
     }
 
 
