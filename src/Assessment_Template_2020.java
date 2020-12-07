@@ -147,6 +147,11 @@ public class Assessment_Template_2020
         //Your code should go here:
         //1: Get the required data from the user (i.e. the student data) and validate the data if needs be
         //2: Insert the data in the database
+        displayAllStudents();
+        System.out.println("Creating new Student");
+        System.out.println();
+
+
     }
 
 
